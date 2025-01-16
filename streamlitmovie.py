@@ -23,25 +23,23 @@ class RecommendationResponse(BaseModel):
     recommendations: List[dict]
 
 
-# Download the model file from Google Drive
+
+
+    import streamlit as st
+import gdown
+import pickle
+
+# Function to download model file using gdown
 def download_model_file():
-    # This is the direct download link
-    url = 'https://drive.google.com/uc?export=download&id=1wzcpzGs-mAnJXznDy2Kg-XldoXY2pGHD'
+    # Google Drive file ID
+    url = "https://drive.google.com/uc?export=download&id=1wzcpzGs-mAnJXznDy2Kg-XldoXY2pGHD"
     output_file = 'movie_recommender_model.pkl'
     st.info("Downloading the model file...")
+
     try:
-        # Add headers to make sure you get the right file
-        headers = {'User-Agent': 'Mozilla/5.0'}
-        r = requests.get(url, headers=headers)
-        
-        # Check if the content is valid
-        if r.status_code == 200:
-            with open(output_file, 'wb') as f:
-                f.write(r.content)
-            st.success("Download completed successfully!")
-        else:
-            st.error(f"Failed to download the file: HTTP status code {r.status_code}")
-            st.stop()
+        # Download the model file using gdown (which handles Google Drive's download)
+        gdown.download(url, output_file, quiet=False)
+        st.success("Download completed successfully!")
     except Exception as e:
         st.error(f"Error downloading the file: {e}")
         st.stop()
@@ -57,8 +55,9 @@ try:
         model_components = pickle.load(file)
     st.success("Model file loaded successfully!")
 except Exception as e:
-    st.error(f"Error loading the model file hiii nik: {e}")
+    st.error(f"Error loading the model file: {e}")
     st.stop()
+
 
 
 # Extract components from the loaded model
