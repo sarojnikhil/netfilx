@@ -17,17 +17,10 @@ TMDB_API_URL = 'https://api.themoviedb.org/3'
 class RecommendationRequest(BaseModel):
     movie_title: str
 
-# Define a class for the recommendation response
+# Define a class for the recommendation response (Ensure no `st` or other modules are mistakenly added here)
 class RecommendationResponse(BaseModel):
     movie_title: str
     recommendations: List[dict]
-
-
-
-
-    import streamlit as st
-import gdown
-import pickle
 
 # Function to download model file using gdown
 def download_model_file():
@@ -57,8 +50,6 @@ try:
 except Exception as e:
     st.error(f"Error loading the model file: {e}")
     st.stop()
-
-
 
 # Extract components from the loaded model
 new_df = model_components['new_df']
@@ -174,6 +165,7 @@ def fetch_movie_details(title, timeout=5):
             raise HTTPException(status_code=500, detail="Error fetching movie details from TMDB.")
 
     raise HTTPException(status_code=404, detail="Movie details not found")
+
 
 
 # Streamlit app
