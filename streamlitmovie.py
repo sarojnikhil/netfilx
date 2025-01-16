@@ -6,6 +6,8 @@ from pydantic import BaseModel
 from typing import List
 from sklearn.metrics.pairwise import cosine_similarity
 from fastapi import HTTPException
+import gdown
+import pickle
 
 # TMDB API details
 TMDB_API_KEY = '88f402126ce96431d1bb56587cea4458'
@@ -19,16 +21,31 @@ class RecommendationRequest(BaseModel):
 class RecommendationResponse(BaseModel):
     movie_title: str
     recommendations: List[dict]
-# Google Drive direct download link for the model
-url = 'https://drive.google.com/uc?export=download&id=1wzcpzGs-mAnJXznDy2Kg-XldoXY2pGHD'  # Replace with your actual link
-
 # Download the model file from Google Drive
-r = requests.get(url)
-with open('movie_recommender_model.pkl', 'wb') as f:
-    f.write(r.content)
+def download_model_file():
+    url = 'https://drive.google.com/uc?export=download&id=1wzcpzGs-mAnJXznDy2Kg-XldoXY2pGHD'
+    output_file = 'movie_recommender_model.pkl'
+    st.info("Downloading the model file...")
+    try:
+        r = requests.get(url)
+        with open(output_file, 'wb') as f:
+            f.write(r.content)
+        st.success("Download completed successfully!")
+    except Exception as e:
+        st.error(f"Error downloading the file: {e}")
+        st.stop()
+
+# Ensure the model file is available
+download_model_file()
+
 # Load the model components from the pickle file
-with open('movie_recommender_model.pkl', 'rb') as file:
-    model_components = pickle.load(file)
+try:
+    with open('movie_recommender_model.pkl', 'rb') as file:
+        model_components = pickle.load(file)
+    st.success("Model file loaded successfully!")
+except Exception as e:
+    st.error(f"Error loading the model file: {e}")
+    st.stop()
 
 # Extract components from the loaded model
 new_df = model_components['new_df']
