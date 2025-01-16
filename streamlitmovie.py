@@ -21,19 +21,31 @@ class RecommendationRequest(BaseModel):
 class RecommendationResponse(BaseModel):
     movie_title: str
     recommendations: List[dict]
+
+
 # Download the model file from Google Drive
 def download_model_file():
+    # This is the direct download link
     url = 'https://drive.google.com/uc?export=download&id=1wzcpzGs-mAnJXznDy2Kg-XldoXY2pGHD'
     output_file = 'movie_recommender_model.pkl'
     st.info("Downloading the model file...")
     try:
-        r = requests.get(url)
-        with open(output_file, 'wb') as f:
-            f.write(r.content)
-        st.success("Download completed successfully!")
+        # Add headers to make sure you get the right file
+        headers = {'User-Agent': 'Mozilla/5.0'}
+        r = requests.get(url, headers=headers)
+        
+        # Check if the content is valid
+        if r.status_code == 200:
+            with open(output_file, 'wb') as f:
+                f.write(r.content)
+            st.success("Download completed successfully!")
+        else:
+            st.error(f"Failed to download the file: HTTP status code {r.status_code}")
+            st.stop()
     except Exception as e:
         st.error(f"Error downloading the file: {e}")
         st.stop()
+
     return output_file
 
 # Ensure the model file is available
@@ -47,6 +59,7 @@ try:
 except Exception as e:
     st.error(f"Error loading the model file: {e}")
     st.stop()
+
 
 # Extract components from the loaded model
 new_df = model_components['new_df']
