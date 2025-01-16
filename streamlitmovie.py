@@ -20,7 +20,7 @@ class RecommendationResponse(BaseModel):
     movie_title: str
     recommendations: List[dict]
 # Google Drive direct download link for the model
-url = 'https://drive.google.com/file/d/1wzcpzGs-mAnJXznDy2Kg-XldoXY2pGHD/view?usp=sharing'  # Replace with your actual link
+url = 'https://drive.google.com/uc?export=download&id=1wzcpzGs-mAnJXznDy2Kg-XldoXY2pGHD'  # Replace with your actual link
 
 # Download the model file from Google Drive
 r = requests.get(url)
