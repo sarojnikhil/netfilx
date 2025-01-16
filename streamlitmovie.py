@@ -34,13 +34,14 @@ def download_model_file():
     except Exception as e:
         st.error(f"Error downloading the file: {e}")
         st.stop()
+    return output_file
 
 # Ensure the model file is available
-download_model_file()
+output_file = download_model_file()
 
 # Load the model components from the pickle file
 try:
-    with open('movie_recommender_model.pkl', 'rb') as file:
+    with open(output_file, 'rb') as file:
         model_components = pickle.load(file)
     st.success("Model file loaded successfully!")
 except Exception as e:
