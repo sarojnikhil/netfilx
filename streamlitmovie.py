@@ -57,7 +57,7 @@ try:
         model_components = pickle.load(file)
     st.success("Model file loaded successfully!")
 except Exception as e:
-    st.error(f"Error loading the model file: {e}")
+    st.error(f"Error loading the model file hiii nik: {e}")
     st.stop()
 
 
